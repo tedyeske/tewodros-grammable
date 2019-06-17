@@ -21,7 +21,7 @@ RSpec.describe GramsController, type: :controller do
       delete :destroy, params: { id: gram.id }
       expect(response).to redirect_to root_path
       gram = Gram.find_by_id(gram.id)
-      #expect(gram).to eq nil
+      expect(gram).to eq nil
     end
 
    it "should return a 404 message if we cannot find a gram with the id that is specified" do
@@ -152,7 +152,14 @@ RSpec.describe GramsController, type: :controller do
       user = FactoryBot.create(:user)
       sign_in user
 
-      post :create, params: { gram: { message: 'Hello!' } }
+      
+      post :create, params: {
+        gram: {
+          message: 'Hello!',
+          picture: fixture_file_upload("/picture.jpg", 'image/png')
+        }
+      }
+
       expect(response).to redirect_to root_path
 
       gram = Gram.last
